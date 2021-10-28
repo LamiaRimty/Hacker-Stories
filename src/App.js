@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const list = [
   
   {
@@ -23,27 +24,43 @@ const list = [
 function App(){
  return (
    <div>
+     
      <h1>My Hacker Stories</h1>
     <label htmlFor="search" >Search</label>
     <input id="search" type="text"/>
 
-  <hr/>
-{ list.map(function(item){
-  return <div key={item.objectID}>
-    <span>
-      <a href={item.url}>{item.title}</a>
-    </span>
-    <span>{item.author}</span>
-    <span>{item.num_commnets}</span>
-    <span>{item.points}</span>
+    <hr/>
+  
+  <List/> 
+  
+</div>
 
-
-  </div>;
-
-})}
-   </div>
  );
 
+}
+
+function List() {
+  return (
+
+    <ul>
+    {list.map(function(item) //returns a new array containing the results of calling a function on every element in this array
+    {  
+     return( 
+       <li key={item.objectID}>
+       <span>
+        <a href={item.url}>{item.title}</a>
+       </span>
+       <span>{item.author}</span>
+       <span>{item.num_commnets}</span>
+       <span>{item.points}</span>
+
+
+      </li>
+     );
+    })}
+ </ul>
+
+  );
 }
 
 export default App;
