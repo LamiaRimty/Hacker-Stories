@@ -30,7 +30,6 @@ function App(){
     <input id="search" type="text"/>
 
     <hr/>
-  
   <List/> 
   
 </div>
@@ -62,5 +61,35 @@ function List() {
 
   );
 }
+
+
+const App=()=>(
+ 
+    <div>
+      <h1>My Hacker Stories</h1>
+
+    <label htmlFor="search" >Search: </label>
+    <input id="search" type="text" ></input>
+    <hr/>
+    <List/>
+    </div>
+  
+);
+  
+  const list=()=>
+     list.map(item =>(
+     
+        <div key={item.objectID}>
+          <span>
+            <a href={item.url}>{ item.title}</a>
+          </span>
+          <span>{ item.author }</span>
+          <span>{item.num_commnets}</span>
+          <span>{item.points}</span>
+  
+        </div>
+     ));
+ 
+  
 
 export default App;
