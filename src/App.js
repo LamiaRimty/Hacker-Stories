@@ -2,6 +2,8 @@ import React from 'react';
 
 const App=()=>{
 
+  const[searchTerm,setSearchTerm]=React.useState('');
+
   const stories = [
   
     {
@@ -23,7 +25,7 @@ const App=()=>{
   ];
 
   const handleChange=(event)=>{
-    console.log(event.target.value);
+    setSearchTerm(event.target.value);
   };
 
  return(
@@ -35,6 +37,10 @@ const App=()=>{
      id="search"
      type="text" 
      onChange={handleChange} />
+
+   <p>
+     Searching for <strong>{searchTerm}</strong>
+   </p>
     <hr/>
     <List list={ stories} />
     </div>
