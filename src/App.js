@@ -37,7 +37,7 @@ const App=()=>{
     <div>
       <h1>My Hacker Stories</h1>
   
-    <Search onSearch={handleSearch} />
+    <Search search={searchTerm} onSearch={handleSearch} />
     <hr/>
 
     <List list={ searchedStories} />
@@ -49,7 +49,11 @@ const App=()=>{
     <div>
         
         <label htmlFor="search"> Search:</label> 
-        <input id="search" type="text" onChange={props.onSearch} />
+        <input id="search" 
+        type="text"
+        value={props.search} 
+        onChange={props.onSearch} 
+         />
        
       </div>
   
