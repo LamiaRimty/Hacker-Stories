@@ -21,7 +21,7 @@ const App=()=>{
       objectID: 1,
   },
   ];
-  const [searchTerm,setSearchTerm]=React.useState('');
+  const [searchTerm , setSearchTerm ]=React.useState('React');
 
   const handleSearch =(event)=>{
 
@@ -45,38 +45,43 @@ const App=()=>{
  );
   };
 
-  const Search=(props)=>(
+  const Search=({ search,onSearch })=>( //concise to block body
+
+    //again block to concise body
+  
     <div>
         
         <label htmlFor="search"> Search:</label> 
         <input id="search" 
         type="text"
-        value={props.search} 
-        onChange={props.onSearch} 
-         />
+        value={search} 
+        onChange={onSearch} 
+        />
        
       </div>
-  
+    
   );
 
   
-  const List=(props)=>(
+  const List=({list})=>
   
-    <ul>
-      {props.list.map((item) =>(
+    list.map(item=> <Item key={item.objectID} item={item}/>);
      
-        <li key={item.objectID}>
+      const Item=({item})=>(
+        <div>
           <span>
+
             <a href={item.url}>{ item.title}</a>
           </span>
           <span>{ item.author }</span>
           <span>{item.num_commnets}</span>
           <span>{item.points}</span>
-  
-        </li>
-      ))}
-    </ul>
-  );
+
+        </div>
+    );  
+     
+   
+
  
   
 
