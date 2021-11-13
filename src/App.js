@@ -21,11 +21,14 @@ const App=()=>{
       objectID: 1,
   },
   ];
-  const [searchTerm , setSearchTerm ]=React.useState('React');  //search box e React likha thakbe
+  const [searchTerm , setSearchTerm ]=React.useState( localStorage.getItem('search') ||'React');  //search box e React likha thakbe
 
+  React.useEffect(()=>{localStorage.getItem('search',searchTerm);},[searchTerm]);
+  
   const handleSearch =(event)=>{
 
     setSearchTerm(event.target.value);
+ 
   };
 
   const searchedStories=stories.filter(story=>
