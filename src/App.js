@@ -21,7 +21,7 @@ const App=()=>{
       objectID: 1,
   },
   ];
-  const [searchTerm , setSearchTerm ]=React.useState('React');
+  const [searchTerm , setSearchTerm ]=React.useState('React');  //search box e React likha thakbe
 
   const handleSearch =(event)=>{
 
@@ -54,8 +54,9 @@ const App=()=>{
         <label htmlFor="search"> Search:</label> 
         <input id="search" 
         type="text"
-        value={search} 
-        onChange={onSearch} 
+        value={search} //search box e likha thakbe
+        onChange={ onSearch} //search ta change & new add kra jabe
+      
         />
        
       </div>
