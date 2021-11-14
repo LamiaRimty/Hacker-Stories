@@ -1,5 +1,22 @@
 import React from 'react';
 
+const useSemiPersistentState=(key,initialState)=>{
+
+  const [ value, setValue ] = React.useState(
+    localStorage.getItem(key) || initialState //search box e '' likha thakbe
+  );
+
+  React.useEffect(()=>
+  {
+    localStorage.getItem('value',key);
+  },
+    [value,key]); //1st argu=sideeffect occures
+  
+   
+  return [value,setValue];
+};
+
+
 const App=()=>{
 
   const stories = [
@@ -21,9 +38,11 @@ const App=()=>{
       objectID: 1,
   },
   ];
-  const [searchTerm , setSearchTerm ]=React.useState( localStorage.getItem('search') ||'React');  //search box e React likha thakbe
+  
+  const [ searchTerm ,setSearchTerm]=useSemiPersistentState('search','React');
 
-  React.useEffect(()=>{localStorage.getItem('search',searchTerm);},[searchTerm]);
+ 
+ 
   
   const handleSearch =(event)=>{
 
