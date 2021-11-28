@@ -1,14 +1,16 @@
 import React from 'react';
 
-const useSemiPersistentState=(key,initialState)=>{
+const useSemiPersistentState=(key,initialState)=>{ //save & get
 
   const [ value, setValue ] = React.useState(
     localStorage.getItem(key) || initialState //search box e '' likha thakbe
+    
   );
 
   React.useEffect(()=>
   {
-    localStorage.getItem('value',key);
+    localStorage.getItem(key,value);
+    console.log(value)
   },
     [value,key]); //1st argu=sideeffect occures
   
@@ -67,13 +69,13 @@ const App=()=>{
  );
   };
 
-  const Search=({ search,onSearch })=>( //concise to block body
+  const Search=({ search,onSearch })=>[ //concise to block body
 
     //again block to concise body
   
-    <div>
+    <>
         
-        <label htmlFor="search"> Search:</label> 
+        <label  htmlFor="search"> Search:</label> 
         <input id="search" 
         type="text"
         value={search} //search box e likha thakbe
@@ -81,9 +83,9 @@ const App=()=>{
       
         />
        
-      </div>
+      </>
     
-  );
+  ];
 
   
   const List=({list})=>
