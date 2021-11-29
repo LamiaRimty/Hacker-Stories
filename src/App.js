@@ -60,34 +60,40 @@ const App=()=>{
   return(
     <div>
       <h1>My Hacker Stories</h1>
-  
-    <Search search={searchTerm} onSearch={handleSearch} />
+      <InputWithLabel
+      id="search"
+      label="Search"
+      value={searchTerm}
+      onInputChange={handleSearch}
+    />
     <hr/>
-
     <List list={ searchedStories} />
     </div>
  );
-  };
+  }
+ const InputWithLabel=({
+ id,
+ label,
+ value,
+ type='text',
+ onInputChange,
+})=>(
 
-  const Search=({ search,onSearch })=>[ //concise to block body
+  <>
+  <label htmlFor={id}>{label}</label>
+  &nbsp;
+  <input
+  id={id}
+  type={type}
+  value={value}
+  onchange={onInputChange}
+  />
+  </>
+ );
 
-    //again block to concise body
   
-    <>
-        
-        <label  htmlFor="search"> Search:</label> 
-        <input id="search" 
-        type="text"
-        value={search} //search box e likha thakbe
-        onChange={ onSearch} //search ta change & new add kra jabe
+
       
-        />
-       
-      </>
-    
-  ];
-
-  
   const List=({list})=>
   
     list.map(item=> <Item key={item.objectID} item={item}/>);
@@ -105,9 +111,4 @@ const App=()=>{
         </div>
     );  
      
-   
-
- 
-  
-
 export default App;
