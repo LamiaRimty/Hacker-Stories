@@ -40,11 +40,23 @@ const useSemiPersistentState=(key,initialState)=>{ //save & get
 
 const App=()=>{
 
+  const getAsyncStories =()=>  //simulate 3rd party api
+  new Promise (resolve=>
+   resolve ({data:{stories:initialStories}})
+    ); 
+ 
+  
  
   const [ searchTerm ,setSearchTerm]=useSemiPersistentState('search','React');
 
- const [ stories,setStories ]= React.useState(initialStories)
+ const [ stories,setStories ]= React.useState([])
  
+ React.useEffect(()=>{
+   getAsyncStories().then(result=>{
+     setStories(result.data.stories);
+   });
+ },[]);
+
   const handleRemoveStory =item =>{
 
     const newStories = stories.filter(
