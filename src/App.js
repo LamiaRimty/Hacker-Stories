@@ -1,5 +1,25 @@
 import React from 'react';
 
+const initialStories = [
+  
+  {
+    title:'React',
+    url: 'https://reactjs.org/',
+    author : "Jordan Walke",
+    num_commnets: 3,
+    points : 4,
+    objectID: 0,
+  },
+  {
+    title: 'Redux',
+    url: 'https://redus.js.org/',
+    author: 'Dan Abramov, Andrew Clark',
+    num_commnets: 2,
+    points: 5,
+    objectID: 1,
+},
+];
+
 const useSemiPersistentState=(key,initialState)=>{ //save & get
 
   const [ value, setValue ] = React.useState(
@@ -10,7 +30,6 @@ const useSemiPersistentState=(key,initialState)=>{ //save & get
   React.useEffect(()=>
   {
     localStorage.getItem(key,value);
-    console.log(value)
   },
     [value,key]); //1st argu=sideeffect occures
   
@@ -21,26 +40,7 @@ const useSemiPersistentState=(key,initialState)=>{ //save & get
 
 const App=()=>{
 
-  const initialStories = [
-  
-    {
-      title:'React',
-      url: 'https://reactjs.org/',
-      author : "Jordan Walke",
-      num_commnets: 3,
-      points : 4,
-      objectID: 0,
-    },
-    {
-      title: 'Redux',
-      url: 'https://redus.js.org/',
-      author: 'Dan Abramov, Andrew Clark',
-      num_commnets: 2,
-      points: 5,
-      objectID: 1,
-  },
-  ];
-  
+ 
   const [ searchTerm ,setSearchTerm]=useSemiPersistentState('search','React');
 
  const [ stories,setStories ]= React.useState(initialStories)
@@ -49,7 +49,7 @@ const App=()=>{
 
     const newStories = stories.filter(
 
-    story=>item.objectID!=story.objectID
+    story=>item.objectID!==story.objectID
     
     );
 
@@ -110,7 +110,7 @@ const App=()=>{
   id={id}
   type={type}
   value={value}
-  onhange={onInputChange}
+  onChange={onInputChange}
   />
   </>
   );
@@ -122,18 +122,16 @@ const App=()=>{
       
   const List=({list,onRemoveItem})=>
   
-    list.map(item=> 
+    list.map(item=> (
     <Item 
     key={item.objectID} 
     item={item}
     onRemoveItem={onRemoveItem}
-    />);
+    />));
      
-      const Item=({item,onRemoveItem})=>{
-        function handleRemoveItem(){
-        onRemoveItem(item);
-        }
-      return(
+      const Item=({item,onRemoveItem})=>(
+       
+
         <div>
           <span>
 
@@ -145,13 +143,12 @@ const App=()=>{
           <span>
             <button
              type="button" 
-             onClick={()=>{onRemoveItem(item);
-            }} 
+             onClick={()=>onRemoveItem(item)}
+             
             >
-            Dissmiss
+            Dismiss
             </button>
           </span>
         </div>
       );
-      }
 export default App;
