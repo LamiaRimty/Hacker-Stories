@@ -40,21 +40,30 @@ const useSemiPersistentState=(key,initialState)=>{ //save & get
 
 const App=()=>{
 
+   
+  const [ searchTerm ,setSearchTerm]=useSemiPersistentState('search','React');
+
+
+ const [ stories,setStories ]= React.useState([]);
+ const [ isLoading,setIsLoading ]=React.useState(false);
+ const [ isError,setIsError] = React.useState(false);
+ 
+
   const getAsyncStories =()=>  //simulate 3rd party api
   new Promise (resolve=>
    resolve ({data:{stories:initialStories}})
     ); 
  
-  
- 
-  const [ searchTerm ,setSearchTerm]=useSemiPersistentState('search','React');
-
- const [ stories,setStories ]= React.useState([])
  
  React.useEffect(()=>{
-   getAsyncStories().then(result=>{
+  setIsLoading(true);
+
+   getAsyncStories().then(result=>{ //set a call
      setStories(result.data.stories);
-   });
+     setIsLoading(false);
+   })
+   .catch (()=> setIsError(true));
+
  },[]);
 
   const handleRemoveStory =item =>{
@@ -90,8 +99,13 @@ const App=()=>{
       <strong>Search:</strong>
       </InputWithLabel>
     <hr/>
-    <List list={ searchedStories} onRemoveItem={handleRemoveStory}/>
-    </div>
+    { isError && <p>Something went wrong</p> }
+    {
+      isLoading?(<p>Loading...</p>):( <List list={ searchedStories} onRemoveItem={handleRemoveStory}/>
+        )
+    }
+
+     </div>
  );
 }
 
