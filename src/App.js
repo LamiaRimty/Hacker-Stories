@@ -50,16 +50,16 @@ const storiesReducer = (state, action) => {
       };
 
     case 'REMOVE_STORY':
-      return {
-        ...state,
-        data: state.data.filter(
-          story => action.payload.objectID !== story.objectID
-        ),
-      };
+
 
     default:
 
-      throw new Error();
+      return {
+        ...state,
+
+      };
+
+    //throw new Error();
 
   }
 };
@@ -79,10 +79,13 @@ const App = () => {
 
 
   React.useEffect(() => {
+    if (!searchTerm)
+      return
+
     dispatchStories({ type: 'STORIES_FETCH_INT' });
 
 
-    fetch(`${API_ENDPOINT}react`)
+    fetch(`${API_ENDPOINT}${searchTerm}`)
       .then(response => response.json())
       .then(result => { //set a call
         dispatchStories({
@@ -94,7 +97,7 @@ const App = () => {
       .catch(() =>
         dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
       );
-  }, []);
+  }, [searchTerm]);
 
   const handleRemoveStory = item => {
 
@@ -110,11 +113,6 @@ const App = () => {
 
     setSearchTerm(event.target.value);
   };
-
-  const searchedStories = stories.data.filter(story =>
-    story.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
 
   return (
     <div>
@@ -133,7 +131,7 @@ const App = () => {
         stories.isLoading ? (
           <p>Loading...</p>
         ) : (
-          <List list={searchedStories}
+          <List list={stories.data}
             onRemoveItem={handleRemoveStory}
           />
         )
