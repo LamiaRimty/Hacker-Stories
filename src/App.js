@@ -25,7 +25,7 @@ const storiesReducer = (state, action) => {
 
   switch (action.type) {
 
-    case 'STOREIS_FETCH_INT':
+    case 'STOREIS_FETCH_INIT':
       return {
         ...state,
         isLoading: true,
@@ -50,7 +50,12 @@ const storiesReducer = (state, action) => {
       };
 
     case 'REMOVE_STORY':
-
+      return{
+        ...state,
+        data: state.data.filter(
+          story=>action.payload.objectID!==story.objectID
+        ),
+      }
 
     default:
 
@@ -75,33 +80,32 @@ const App = () => {
 
   );
 
-
-
+  const handleFetchStories=React.useCallback(()={
+    if (!searchTerm) return;
+  
+  dispatchStories({ type: 'STORIES_FETCH_INIT' });
+  
+  
+  fetch(`${API_ENDPOINT}${searchTerm}`);
+    .then(response => response.json())
+    .then(result => { //set a call
+      dispatchStories({
+        type: 'STORIES_FETCH_SUCCESS',
+        payload: result.hits,
+      });
+  
+    })
+    .catch(() =>
+      dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
+    );
+  },[searchTerm]);
+  
 
   React.useEffect(() => {
-    if (!searchTerm)
-      return
-
-    dispatchStories({ type: 'STORIES_FETCH_INT' });
-
-
-    fetch(`${API_ENDPOINT}${searchTerm}`)
-      .then(response => response.json())
-      .then(result => { //set a call
-        dispatchStories({
-          type: 'STORIES_FETCH_SUCCESS',
-          payload: result.hits,
-        });
-
-      })
-      .catch(() =>
-        dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
-      );
-  }, [searchTerm]);
+    handleFetchStories();
+  }, [handleFetchStories]);
 
   const handleRemoveStory = item => {
-
-
     dispatchStories({
       type: 'REMOVE_STORY',
       payload: item,
