@@ -50,10 +50,10 @@ const storiesReducer = (state, action) => {
       };
 
     case 'REMOVE_STORY':
-      return{
+      return {
         ...state,
         data: state.data.filter(
-          story=>action.payload.objectID!==story.objectID
+          story => action.payload.objectID !== story.objectID
         ),
       }
 
@@ -80,13 +80,14 @@ const App = () => {
 
   );
 
-  const handleFetchStories=React.useCallback(()={
-    if (!searchTerm) return;
+  const handleFetchStories = React.useCallback(() =>
+   {
+    if(!searchTerm) return;
+
+    dispatchStories({ type: 'STORIES_FETCH_INIT' });
   
-  dispatchStories({ type: 'STORIES_FETCH_INIT' });
   
-  
-  fetch(`${API_ENDPOINT}${searchTerm}`);
+  fetch(`${API_ENDPOINT}${ searchTerm }`)
     .then(response => response.json())
     .then(result => { //set a call
       dispatchStories({
