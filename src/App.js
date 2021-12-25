@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query= ';
 
@@ -86,12 +87,11 @@ const App = () => {
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
 
-    fetch(url)
-      .then(response => response.json())
+    axios.get(url) //call http get req
       .then(result => { //set a call
         dispatchStories({
           type: 'STORIES_FETCH_SUCCESS',
-          payload: result.hits,
+          payload: result.data.hits,  //when res calls knowing comes back as json already
         });
 
       })
