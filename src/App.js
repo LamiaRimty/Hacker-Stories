@@ -13,7 +13,7 @@ const useSemiPersistentState = (key, initialState) => { //save & get
 
   React.useEffect(() => {
     localStorage.getItem(key, value);
-  },[value, key]); //1st argu=sideeffect occures
+  }, [value, key]); //1st argu=sideeffect occures
 
 
   return [value, setValue];
@@ -55,26 +55,25 @@ const storiesReducer = (state, action) => {
         data: state.data.filter(
           story => action.payload.objectID !== story.objectID
         ),
-      }
+      };
 
     default:
-
       return {
         ...state,
 
       };
-
     //throw new Error();
-
   }
 };
+
+
 
 
 const App = () => {
 
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
-  const [url,setUrl]=React.useState(
-   `${API_ENDPOINT} ${searchTerm}`
+  const [url, setUrl] = React.useState(
+    `${API_ENDPOINT} ${searchTerm}`
   );
 
   const [stories, dispatchStories] = React.useReducer(
@@ -82,24 +81,24 @@ const App = () => {
     { data: [], isLoading: false, isError: false }
 
   );
-  const handleFetchStories = React.useCallback( async() => {
+  const handleFetchStories = React.useCallback(async () => {
 
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
-    
-    try{
-      const result =await axios.get(url); //ca;; http req,set a call
-         
+
+    try {
+      const result = await axios.get(url); //ca;; http req,set a call
+
       dispatchStories({
         type: 'STORIES_FETCH_SUCCESS',
         payload: result.data.hits,  //when res calls knowing comes back as json already
       });
 
-    
+
     }
-       catch{
-        dispatchStories({ type: 'STORIES_FETCH_FAILURE' });
-       }
-      }, [url]);
+    catch {
+      dispatchStories({ type: 'STORIES_FETCH_FAILURE' });
+    }
+  }, [url]);
 
 
   React.useEffect(() => {
@@ -113,36 +112,24 @@ const App = () => {
     });
   };
 
-  const handleSearchInput=event=>{
+  const handleSearchInput = event => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchSubmit=()=>{
-    setUrl( `${API_ENDPOINT} ${searchTerm} `);
+  const handleSearchSubmit = (event) => {
+    setUrl(`${API_ENDPOINT} ${searchTerm} `);
+    event.preventDefault();
   };
 
   return (
     <div>
       <h1>My Hacker Stories</h1>
 
-
-      <InputWithLabel
-        id="search"
-        value={searchTerm}
-        isFocused
-        onInputChange={handleSearchInput}
-      >
-        <strong>Search:</strong>
-
-      </InputWithLabel>
-
-      <button
-        type="button"
-        disabled={!searchTerm} 
-        onClick={handleSearchSubmit}
-        >
-        Submit
-      </button>
+      <SearchForm
+        searchTerm={searchTerm}
+        onSearchInput={handleSearchInput}
+        onSearchSubmit={handleSearchSubmit}
+      />
 
       <hr />
       {stories.isError && <p>Something went wrong...</p>}
@@ -159,6 +146,35 @@ const App = () => {
     </div>
   );
 };
+
+const SearchForm = ({
+  
+  searchTerm,
+  onSearchInput,
+  onSearchSubmit,
+
+}) => (
+
+  <form onSubmit= {onSearchSubmit}>
+    <InputWithLabel
+      id="search"
+      value={searchTerm}
+      isFocused
+      onInputChange={onSearchInput}
+    >
+      <strong>Search:</strong>
+
+    </InputWithLabel>
+
+    <button
+      type="submit"
+      disabled={!searchTerm}
+  
+    >
+      Submit
+    </button>
+  </form>
+);
 
 const InputWithLabel = ({
   id,
@@ -221,7 +237,7 @@ const Item = ({ item, onRemoveItem }) => (
       <button
         type="button"
         onClick={() => onRemoveItem(item)}
-        >
+      >
         Dismiss
       </button>
     </span>
